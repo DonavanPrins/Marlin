@@ -328,7 +328,7 @@
  * Thermal Protection parameters for the bed are just as above for hotends.
  */
 #if ENABLED(THERMAL_PROTECTION_BED)
-  #define THERMAL_PROTECTION_BED_PERIOD        20 // Seconds
+  #define THERMAL_PROTECTION_BED_PERIOD        60 // Seconds
   #define THERMAL_PROTECTION_BED_HYSTERESIS     2 // Degrees Celsius
 
   /**
@@ -578,7 +578,7 @@
  *
  * Define one or both of these to override the default 0-255 range.
  */
-//#define FAN_MIN_PWM 50
+#define FAN_MIN_PWM 50
 //#define FAN_MAX_PWM 128
 
 /**
@@ -882,7 +882,7 @@
 //#define HOMING_BACKOFF_POST_MM { 2, 2, 2 }  // (linear=mm, rotational=°) Backoff from endstops after homing
 //#define XY_COUNTERPART_BACKOFF_MM 0         // (mm) Backoff X after homing Y, and vice-versa
 
-//#define QUICK_HOME                          // If G28 contains XY do a diagonal move first
+#define QUICK_HOME                            // If G28 contains XY do a diagonal move first
 //#define HOME_Y_BEFORE_X                     // If G28 contains XY home Y before X
 //#define HOME_Z_FIRST                        // Home Z first. Requires a Z-MIN endstop (not a probe).
 //#define CODEPENDENT_XY_HOMING               // If X/Y can't home without homing Y/X first
@@ -1261,7 +1261,7 @@
  * vibration and surface artifacts. The algorithm adapts to provide the best possible step smoothing at the
  * lowest stepping frequencies.
  */
-//#define ADAPTIVE_STEP_SMOOTHING
+#define ADAPTIVE_STEP_SMOOTHING
 
 /**
  * Custom Microstepping
@@ -1347,8 +1347,8 @@
 // Change values more rapidly when the encoder is rotated faster
 #define ENCODER_RATE_MULTIPLIER
 #if ENABLED(ENCODER_RATE_MULTIPLIER)
-  #define ENCODER_10X_STEPS_PER_SEC   30  // (steps/s) Encoder rate for 10x speed
-  #define ENCODER_100X_STEPS_PER_SEC  80  // (steps/s) Encoder rate for 100x speed
+  #define ENCODER_10X_STEPS_PER_SEC   10  // (steps/s) Encoder rate for 10x speed
+  #define ENCODER_100X_STEPS_PER_SEC  15  // (steps/s) Encoder rate for 100x speed
 #endif
 
 // Play a beep when the feedrate is changed from the Status Screen
@@ -1364,7 +1364,7 @@
 //#define LCD_BACKLIGHT_TIMEOUT_MINS 1  // (minutes) Timeout before turning off the backlight
 
 #if HAS_BED_PROBE && EITHER(HAS_MARLINUI_MENU, HAS_TFT_LVGL_UI)
-  //#define PROBE_OFFSET_WIZARD       // Add a Probe Z Offset calibration option to the LCD menu
+  #define PROBE_OFFSET_WIZARD       // Add a Probe Z Offset calibration option to the LCD menu
   #if ENABLED(PROBE_OFFSET_WIZARD)
     /**
      * Enable to init the Probe Z-Offset when starting the Wizard.
@@ -1414,7 +1414,7 @@
 #endif // HAS_MARLINUI_MENU
 
 #if ANY(HAS_DISPLAY, DWIN_LCD_PROUI, DWIN_CREALITY_LCD_JYERSUI)
-  //#define SOUND_MENU_ITEM   // Add a mute option to the LCD menu
+  #define SOUND_MENU_ITEM   // Add a mute option to the LCD menu
   #define SOUND_ON_DEFAULT    // Buzzer/speaker default enabled state
 #endif
 
@@ -1430,7 +1430,7 @@
   #endif
 
   // Scroll a longer status message into view
-  //#define STATUS_MESSAGE_SCROLLING
+  #define STATUS_MESSAGE_SCROLLING
 
   // Apply a timeout to low-priority status messages
   //#define STATUS_MESSAGE_TIMEOUT_SEC 30 // (seconds)
@@ -1470,10 +1470,10 @@
 #endif // HAS_DISPLAY || DWIN_LCD_PROUI
 
 // Add the G-code 'M73' to set / report the current job progress
-//#define SET_PROGRESS_MANUALLY
+#define SET_PROGRESS_MANUALLY
 #if ENABLED(SET_PROGRESS_MANUALLY)
   //#define SET_PROGRESS_PERCENT          // Add 'P' parameter to set percentage done, otherwise use Marlin's estimate
-  //#define SET_REMAINING_TIME            // Add 'R' parameter to set remaining time, otherwise use Marlin's estimate
+  #define SET_REMAINING_TIME            // Add 'R' parameter to set remaining time, otherwise use Marlin's estimate
   //#define SET_INTERACTION_TIME          // Add 'C' parameter to set time until next filament change or other user interaction
   #if ENABLED(SET_INTERACTION_TIME)
     #define SHOW_INTERACTION_TIME         // Display time until next user interaction ('C' = filament change)
@@ -1485,7 +1485,7 @@
 #if HAS_DISPLAY && EITHER(SDSUPPORT, SET_PROGRESS_MANUALLY)
   #define SHOW_PROGRESS_PERCENT           // Show print progress percentage (doesn't affect progress bar)
   #define SHOW_ELAPSED_TIME               // Display elapsed printing time (prefix 'E')
-  //#define SHOW_REMAINING_TIME           // Display estimated time to completion (prefix 'R')
+  #define SHOW_REMAINING_TIME             // Display estimated time to completion (prefix 'R')
 
   //#define PRINT_PROGRESS_SHOW_DECIMALS  // Show/report progress with decimal digits, not all UIs support this
 
@@ -1554,7 +1554,7 @@
    * an option on the LCD screen to continue the print from the last-known
    * point in the file.
    */
-  //#define POWER_LOSS_RECOVERY
+  #define POWER_LOSS_RECOVERY
   #if ENABLED(POWER_LOSS_RECOVERY)
     #define PLR_ENABLED_DEFAULT   false // Power Loss Recovery enabled by default. (Set with 'M413 Sn' & M500)
     //#define BACKUP_POWER_SUPPLY       // Backup power / UPS to move the steppers on power loss
@@ -1600,17 +1600,17 @@
    *  - SDSORT_CACHE_NAMES will retain the sorted file listing in RAM. (Expensive!)
    *  - SDSORT_DYNAMIC_RAM only uses RAM when the SD menu is visible. (Use with caution!)
    */
-  //#define SDCARD_SORT_ALPHA
+  #define SDCARD_SORT_ALPHA
 
   // SD Card Sorting options
   #if ENABLED(SDCARD_SORT_ALPHA)
     #define SDSORT_LIMIT       40     // Maximum number of sorted items (10-256). Costs 27 bytes each.
     #define FOLDER_SORTING     -1     // -1=above  0=none  1=below
     #define SDSORT_GCODE       false  // Allow turning sorting on/off with LCD and M34 G-code.
-    #define SDSORT_USES_RAM    false  // Pre-allocate a static array for faster pre-sorting.
+    #define SDSORT_USES_RAM    true   // Pre-allocate a static array for faster pre-sorting.
     #define SDSORT_USES_STACK  false  // Prefer the stack for pre-sorting to give back some SRAM. (Negated by next 2 options.)
-    #define SDSORT_CACHE_NAMES false  // Keep sorted items in RAM longer for speedy performance. Most expensive option.
-    #define SDSORT_DYNAMIC_RAM false  // Use dynamic allocation (within SD menus). Least expensive option. Set SDSORT_LIMIT before use!
+    #define SDSORT_CACHE_NAMES true   // Keep sorted items in RAM longer for speedy performance. Most expensive option.
+    #define SDSORT_DYNAMIC_RAM true   // Use dynamic allocation (within SD menus). Least expensive option. Set SDSORT_LIMIT before use!
     #define SDSORT_CACHE_VFATS 2      // Maximum number of 13-byte VFAT entries to use for sorting.
                                       // Note: Only affects SCROLL_LONG_FILENAMES with SDSORT_CACHE_NAMES but not SDSORT_DYNAMIC_RAM.
   #endif
@@ -1623,7 +1623,7 @@
   //#define LONG_FILENAME_WRITE_SUPPORT   // Create / delete files with long filenames via M28, M30, and Binary Transfer Protocol
   //#define M20_TIMESTAMP_SUPPORT         // Include timestamps by adding the 'T' flag to M20 commands
 
-  //#define SCROLL_LONG_FILENAMES         // Scroll long filenames in the SD card menu
+  #define SCROLL_LONG_FILENAMES         // Scroll long filenames in the SD card menu
 
   //#define SD_ABORT_NO_COOLDOWN          // Leave the heaters on after Stop Print (not recommended!)
 
@@ -2341,7 +2341,7 @@
  *
  * Override the default value based on the driver type set in Configuration.h.
  */
-//#define MINIMUM_STEPPER_PULSE 2
+#define MINIMUM_STEPPER_PULSE 0
 
 /**
  * Maximum stepping rate (in Hz) the stepper driver allows
@@ -2622,32 +2622,32 @@
  *
  * Enable PARK_HEAD_ON_PAUSE to add the G-code M125 Pause and Park.
  */
-//#define ADVANCED_PAUSE_FEATURE
+#define ADVANCED_PAUSE_FEATURE
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
-  #define PAUSE_PARK_RETRACT_FEEDRATE         60  // (mm/s) Initial retract feedrate.
-  #define PAUSE_PARK_RETRACT_LENGTH            2  // (mm) Initial retract.
+  #define PAUSE_PARK_RETRACT_FEEDRATE         25  // (mm/s) Initial retract feedrate.
+  #define PAUSE_PARK_RETRACT_LENGTH            5  // (mm) Initial retract.
                                                   // This short retract is done immediately, before parking the nozzle.
-  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast.
+  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     25  // (mm/s) Unload filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_UNLOAD_ACCEL        25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
   #define FILAMENT_CHANGE_UNLOAD_LENGTH      100  // (mm) The length of filament for a complete unload.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
                                                   //   Set to 0 for manual unloading.
-  #define FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE   6  // (mm/s) Slow move when starting load.
-  #define FILAMENT_CHANGE_SLOW_LOAD_LENGTH     0  // (mm) Slow length, to allow time to insert material.
+  #define FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE   25  // (mm/s) Slow move when starting load.
+  #define FILAMENT_CHANGE_SLOW_LOAD_LENGTH     10  // (mm) Slow length, to allow time to insert material.
                                                   // 0 to disable start loading and skip to fast load only
-  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE   6  // (mm/s) Load filament feedrate. This can be pretty fast.
+  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE   25  // (mm/s) Load filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH     0  // (mm) Load length of filament, from extruder gear to nozzle.
+  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH     100  // (mm) Load length of filament, from extruder gear to nozzle.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
   //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
-  #define ADVANCED_PAUSE_PURGE_FEEDRATE        3  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
+  #define ADVANCED_PAUSE_PURGE_FEEDRATE       25 // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
   #define ADVANCED_PAUSE_PURGE_LENGTH         50  // (mm) Length to extrude after loading.
                                                   //   Set to 0 for manual extrusion.
                                                   //   Filament can be extruded repeatedly from the Filament Change menu
                                                   //   until extrusion is consistent, and to purge old filament.
-  #define ADVANCED_PAUSE_RESUME_PRIME          0  // (mm) Extra distance to prime nozzle after returning from park.
+  #define ADVANCED_PAUSE_RESUME_PRIME          10  // (mm) Extra distance to prime nozzle after returning from park.
   //#define ADVANCED_PAUSE_FANS_PAUSE             // Turn off print-cooling fans while the machine is paused.
 
                                                   // Filament Unload does a Retract, Delay, and Purge first:
@@ -2662,7 +2662,7 @@
   //#define FILAMENT_CHANGE_RESUME_ON_INSERT      // Automatically continue / load filament when runout sensor is triggered again.
   //#define PAUSE_REHEAT_FAST_RESUME              // Reduce number of waits by not prompting again post-timeout before continuing.
 
-  //#define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.
+  #define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.
   //#define HOME_BEFORE_FILAMENT_CHANGE           // If needed, home before parking for filament change
 
   //#define FILAMENT_LOAD_UNLOAD_GCODES           // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
@@ -3314,7 +3314,7 @@
    * Beta feature!
    * Create a 50/50 square wave step pulse optimal for stepper drivers.
    */
-  //#define SQUARE_WAVE_STEPPING
+  #define SQUARE_WAVE_STEPPING
 
   /**
    * Enable M122 debugging command for TMC stepper drivers.
