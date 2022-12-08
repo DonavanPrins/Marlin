@@ -133,7 +133,7 @@ fil_change_settings_t fc_settings[EXTRUDERS];
  *
  * - Fail if the TARGET temperature is too low
  * - Display LCD placard with temperature status
- * - Return when heating is done or aborted
+ * - Return when heating is done or abortedrge_length
  *
  * Returns 'true' if heating was completed, 'false' for abort
  */
@@ -285,6 +285,7 @@ bool load_filament(const_float_t slow_load_length/*=0*/, const_float_t fast_load
           KEEPALIVE_STATE(PAUSED_FOR_USER);
           wait_for_user = false;
           #if EITHER(HAS_MARLINUI_MENU, DWIN_LCD_PROUI)
+          //#if ANY(HAS_MARLINUI_MENU, DWIN_LCD_PROUI, DWIN_CREALITY_LCD_JYERSUI)
             ui.pause_show_message(PAUSE_MESSAGE_OPTION); // Also sets PAUSE_RESPONSE_WAIT_FOR
           #else
             pause_menu_response = PAUSE_RESPONSE_WAIT_FOR;
@@ -397,7 +398,7 @@ bool pause_print(const_float_t retract, const xyz_pos_t &park_point, const bool 
   DEBUG_SECTION(pp, "pause_print", true);
   DEBUG_ECHOLNPGM("... park.x:", park_point.x, " y:", park_point.y, " z:", park_point.z, " unloadlen:", unload_length, " showlcd:", show_lcd DXC_SAY);
 
-  UNUSED(show_lcd);
+  //UNUSED(show_lcd);
 
   if (did_pause_print) return false; // already paused
 
@@ -701,7 +702,7 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
 
   #if ENABLED(SDSUPPORT)
     if (did_pause_print) {
-      --did_pause_print;
+      did_pause_print = 0;
       card.startOrResumeFilePrinting();
       // Write PLR now to update the z axis value
       TERN_(POWER_LOSS_RECOVERY, if (recovery.enabled) recovery.save(true));

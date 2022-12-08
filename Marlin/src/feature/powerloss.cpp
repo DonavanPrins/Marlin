@@ -336,8 +336,10 @@ void PrintJobRecovery::write() {
   open(false);
   file.seekSet(0);
   const int16_t ret = file.write(&info, sizeof(info));
+
   if (ret == -1) DEBUG_ECHOLNPGM("Power-loss file write failed.");
   if (!file.close()) DEBUG_ECHOLNPGM("Power-loss file close failed.");
+
 }
 
 /**
@@ -385,8 +387,8 @@ void PrintJobRecovery::resume() {
   #endif
 
   // Interpret the saved Z according to flags
-  const float z_print = info.current_position.z,
-              z_raised = z_print + info.zraise;
+  const float z_print = info.current_position.z;
+  //            z_raised = z_print - info.zraise;
 
   //
   // Home the axes that can safely be homed, and
@@ -412,17 +414,18 @@ void PrintJobRecovery::resume() {
       #define HOMING_Z_DOWN 1
     #endif
 
-    float z_now = info.flag.raised ? z_raised : z_print;
+    //float z_now = info.flag.raised ? z_raised : z_print;
 
     #if !HOMING_Z_DOWN
       // Set Z to the real position
-      sprintf_P(cmd, PSTR("G92.9Z%s"), dtostrf(z_now, 1, 3, str_1));
+      sprintf_P(cmd, PSTR("G92.9Z%s"), dtostrf(z_print, 1, 3, str_1));
       gcode.process_subcommands_now(cmd);
     #endif
 
     // Does Z need to be raised now? It should be raised before homing XY.
-    if (z_raised > z_now) {
-      z_now = z_raised;
+    const float z_raised = info.zraise,
+                z_now = z_raised > 0 ? z_print : z_print + 20;  //todo: get z_raise from config
+    if (z_now > z_print) {
       sprintf_P(cmd, PSTR("G1Z%sF600"), dtostrf(z_now, 1, 3, str_1));
       gcode.process_subcommands_now(cmd);
     }
